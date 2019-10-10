@@ -2,6 +2,7 @@ package dao.json.impl.DAO;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import dao.SzereploDAO;
 import filmespelda.model.Szereplo;
 
@@ -25,6 +26,7 @@ public class DAOJSON implements SzereploDAO {
             }
         }
         mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
     }
 
     public DAOJSON(String jsonFilePath) {
@@ -37,6 +39,7 @@ public class DAOJSON implements SzereploDAO {
             }
         }
         mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
     }
 
 
