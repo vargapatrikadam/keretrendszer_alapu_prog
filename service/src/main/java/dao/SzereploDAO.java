@@ -1,5 +1,6 @@
 package dao;
 
+import filmespelda.exceptions.NoMatchingId;
 import filmespelda.model.Szereplo;
 
 import java.util.Collection;
@@ -10,5 +11,5 @@ public interface SzereploDAO {
     public Collection<Szereplo> readAllSzereplo();
     public void updateSzereplo(Szereplo szereplo);
     public void deleteSzereplo(Szereplo szereplo);
-    public Szereplo readSzereplo(UUID id);
+    public Szereplo readSzereplo(UUID id) throws NoMatchingId;
 }
