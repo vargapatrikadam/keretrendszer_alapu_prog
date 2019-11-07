@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.SzereploService;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
@@ -39,5 +41,18 @@ public class SzereploController {
     public String addSzereplo(@RequestBody Szereplo szereplo) throws DateIsTooLate, InvalidValue {
         service.addSzereplo(szereplo);
         return szereplo.getId().toString();
+    }
+
+    @RequestMapping(value = "/fiatalkoruszerpelok", method = RequestMethod.GET)
+    @ResponseBody
+    public Collection<Szereplo> showFiatalkoruak(){
+        Collection<Szereplo> szereplok = service.listAllSzereplo();
+        Collection<Szereplo> fiatalok = new ArrayList<>();
+        for(Szereplo sz: szereplok){
+            if(sz.getSzuletesi_datum().isAfter(LocalDate.now().minusYears(18))){
+                fiatalok.add(sz);
+            }
+        }
+        return fiatalok;
     }
 }
