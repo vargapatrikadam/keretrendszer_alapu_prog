@@ -16,5 +16,6 @@ public class DAOJSONTest {
         szereplo.setKarakter_neve("KISCICA");
         szereplo.setSzuletesi_datum(LocalDate.of(1988,05,24));
         dao.createSzereplo(szereplo);
+        int size = dao.readAllSzereplo().size();
     }
 }

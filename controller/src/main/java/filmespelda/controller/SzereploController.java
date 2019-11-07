@@ -1,6 +1,8 @@
 package filmespelda.controller;
 
+import filmespelda.exceptions.DateIsTooLate;
 import filmespelda.model.Szereplo;
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -34,8 +36,8 @@ public class SzereploController {
 
     @RequestMapping(value = "/addSzereplo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String addSzereplo(@RequestBody Szereplo szereplo){
-        System.out.println(szereplo);
-        return "";
+    public String addSzereplo(@RequestBody Szereplo szereplo) throws DateIsTooLate, InvalidValue {
+        service.addSzereplo(szereplo);
+        return szereplo.getId().toString();
     }
 }
