@@ -87,7 +87,7 @@ public class DAOJSON implements SzereploDAO {
         try {
             Szereplo torlendo = readSzereplo(szereplo.getId());
             szereplok.remove(torlendo);
-            mapper.writeValue(jsonFile, szereplo);
+            mapper.writeValue(jsonFile, szereplok);
         } catch (NoMatchingId noMatchingId) {
             throw noMatchingId;
         } catch (IOException e) {
