@@ -1,20 +1,19 @@
 package filmespelda.controller;
 
 import filmespelda.exceptions.DateIsTooLate;
+import filmespelda.exceptions.NoMatchingId;
 import filmespelda.model.Szereplo;
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import service.SzereploService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Controller
 public class SzereploController {
@@ -54,5 +53,22 @@ public class SzereploController {
             }
         }
         return fiatalok;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void testIllegalArgument(Exception e){
+        System.out.println(e.getMessage());
+    }
+
+    @ExceptionHandler(NoMatchingId.class)
+    @ResponseBody
+    public String handleNoMatchingId(Exception e){
+        return "UUID not found in the database: " + e.getMessage();
+    }
+
+    @RequestMapping(value = "/szereplo/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Szereplo getSzereploById(@PathVariable UUID id) throws NoMatchingId {
+        return service.getSzereplo(id);
     }
 }
