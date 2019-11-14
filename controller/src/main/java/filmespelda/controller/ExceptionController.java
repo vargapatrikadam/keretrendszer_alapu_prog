@@ -1,10 +1,15 @@
 package filmespelda.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.MethodNotAllowedException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
@@ -20,9 +25,16 @@ public class ExceptionController {
         return "Use one of the followings: " + MediaType.APPLICATION_JSON_VALUE;
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
+    /*@ExceptionHandler(NoHandlerFoundException.class)
     @ResponseBody
     public String custom404(){
         return "Something went wrong";
+    }*/
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String methodNotAllowedHandler(){
+        return "Method is incorrect";
     }
 }
