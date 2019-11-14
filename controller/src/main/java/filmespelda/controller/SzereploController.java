@@ -42,6 +42,13 @@ public class SzereploController {
         return szereplo.getId().toString();
     }
 
+    @RequestMapping(value = "/removeSzereplo", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String removeSzereplo(@RequestBody Szereplo szereplo) throws DateIsTooLate, InvalidValue, NoMatchingId {
+        service.deleteSzereplo(szereplo);
+        return  "Szereplo torolve: " + szereplo.getId().toString();
+    }
+
     @RequestMapping(value = "/fiatalkoruszerpelok", method = RequestMethod.GET)
     @ResponseBody
     public Collection<Szereplo> showFiatalkoruak(){
@@ -66,4 +73,10 @@ public class SzereploController {
     public Szereplo getSzereploById(@PathVariable UUID id) throws NoMatchingId {
         return service.getSzereplo(id);
     }
+
+    /*@ExceptionHandler(NoMatchingId.class)
+    @ResponseBody
+    public String handleNoMatchingId(Exception e){
+        return "UUID not found in the database: " + e.getMessage();
+    }*/
 }
