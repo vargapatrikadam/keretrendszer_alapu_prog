@@ -55,11 +55,6 @@ public class SzereploController {
         return fiatalok;
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public void testIllegalArgument(Exception e){
-        System.out.println(e.getMessage());
-    }
-
     @ExceptionHandler(NoMatchingId.class)
     @ResponseBody
     public String handleNoMatchingId(Exception e){
