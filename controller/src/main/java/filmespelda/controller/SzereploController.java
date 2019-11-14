@@ -61,7 +61,7 @@ public class SzereploController {
         return "UUID not found in the database: " + e.getMessage();
     }
 
-    @RequestMapping(value = "/szereplo/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/szereplo/{id:[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}}", method = RequestMethod.GET)
     @ResponseBody
     public Szereplo getSzereploById(@PathVariable UUID id) throws NoMatchingId {
         return service.getSzereplo(id);
