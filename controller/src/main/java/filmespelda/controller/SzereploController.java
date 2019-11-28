@@ -5,6 +5,7 @@ import filmespelda.exceptions.NoMatchingId;
 import filmespelda.model.Szereplo;
 import org.omg.CORBA.DynAnyPackage.InvalidValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -74,9 +75,77 @@ public class SzereploController {
         return service.getSzereplo(id);
     }
 
-    /*@ExceptionHandler(NoMatchingId.class)
+    @RequestMapping(value = "/szereplok/", method = RequestMethod.GET)
     @ResponseBody
-    public String handleNoMatchingId(Exception e){
-        return "UUID not found in the database: " + e.getMessage();
-    }*/
+    public Collection<Szereplo> getSzereploByDate(@RequestParam(required = false) Integer ev,
+                                    @RequestParam(required = false) Integer honap,
+                                    @RequestParam(required = false) Integer nap) throws DateIsMissingSense {
+
+        if(ev == null && honap == null && nap == null){
+            throw new DateIsMissingSense();
+        }
+
+        Collection<Szereplo> szereplok =  service.listAllSzereplo();
+        Collection<Szereplo> szerpeloResult = new ArrayList<>();
+
+        for (Szereplo sz: szereplok) {
+            if(ev != null && honap != null && nap != null){
+                LocalDate date = LocalDate.of(ev, honap, nap);
+                if(sz.getSzuletesi_datum().equals(date)) {
+                    szerpeloResult.add(sz);
+                    continue;
+                }
+                continue;
+            }
+
+            if(ev != null && honap != null) {
+                if(sz.getSzuletesi_datum().getMonth().getValue() == honap &&
+                    sz.getSzuletesi_datum().getYear() == ev){
+                    szerpeloResult.add(sz);
+                    continue;
+                }
+                continue;
+            }
+            if(honap != null && nap != null) {
+                if(sz.getSzuletesi_datum().getMonth().getValue() == honap &&
+                        sz.getSzuletesi_datum().getDayOfMonth() == nap){
+                    szerpeloResult.add(sz);
+                    continue;
+                }
+                continue;
+            }
+            if(ev != null && nap != null) {
+                if(sz.getSzuletesi_datum().getYear() == ev &&
+                        sz.getSzuletesi_datum().getDayOfMonth() == nap){
+                    szerpeloResult.add(sz);
+                    continue;
+                }
+                continue;
+            }
+
+            if(ev != null){
+                if(sz.getSzuletesi_datum().getYear() != ev){
+                    continue;
+                }
+                szerpeloResult.add(sz);
+                continue;
+            }
+            if(honap != null){
+                if(sz.getSzuletesi_datum().getMonth().getValue() != honap){
+                    continue;
+                }
+                szerpeloResult.add(sz);
+                continue;
+            }
+            if(nap != null){
+                if(sz.getSzuletesi_datum().getDayOfMonth() != nap){
+                    continue;
+                }
+                szerpeloResult.add(sz);
+                continue;
+            }
+        }
+
+        return szerpeloResult;
+    }
 }
